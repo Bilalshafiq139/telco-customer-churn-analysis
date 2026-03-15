@@ -1,4 +1,15 @@
 # Telco Customer Churn Analysis & Prediction
+![Python](https://img.shields.io/badge/python-3.10-blue.svg)
+![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=flat&logo=numpy&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)
+![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=flat&logo=Matplotlib&logoColor=black)
+![Seaborn](https://img.shields.io/badge/Seaborn-%234479A1.svg?style=flat&logo=Seaborn&logoColor=white)
+![Status](https://img.shields.io/badge/Project-Completed-brightgreen)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-%23F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)
+![Random Forest](https://img.shields.io/badge/Algorithm-Random%20Forest-green)
+![Logistic Regression](https://img.shields.io/badge/Algorithm-Logistic%20Regression-blue)
+
 
 ### Project Overview
 This project predicts customer churn for a telecom company using machine learning. It combines exploratory data analysis (EDA), feature engineering, model building, and actionable business recommendations.

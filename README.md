@@ -48,6 +48,125 @@ This project predicts customer churn for a telecom company using machine learnin
 - Churn distribution
 - Feature importance (Random Forest)
 - Tenure vs Churn boxplots
+
+---
+
+## 🎯 Customer Churn Prediction App
+
+We've built an interactive **Streamlit application** that allows anyone to predict customer churn probability using our trained machine learning models!
+
+### Quick Start
+
+#### Option 1: Windows Users
+Double-click `run_app.bat` or run:
+```bash
+run_app.bat
+```
+
+#### Option 2: Mac/Linux Users
+Run:
+```bash
+bash run_app.sh
+```
+
+#### Option 3: Universal (Any OS)
+```bash
+streamlit run apps/prediction.py
+```
+
+The app will open at `http://localhost:8501`
+
+### App Features
+✨ **Interactive Churn Prediction**
+- Enter customer data through an easy-to-use form
+- Choose between two models (Random Forest or Logistic Regression)
+- Get instant churn probability predictions
+- Visual risk assessment (Low/Medium/High)
+- Save predictions to CSV files
+- Automatic prediction logging
+
+### How to Use
+1. Select your preferred model (Random Forest recommended)
+2. Fill in customer information:
+   - Demographics (gender, age, dependents, etc.)
+   - Service details (tenure, charges, contract type)
+   - Additional services (phone, internet, security, etc.)
+3. Click "🔮 Predict Churn"
+4. Review prediction results
+5. Download or save predictions
+
+### Model Comparison
+| Metric | Random Forest | Logistic Regression |
+|--------|--------------|-------------------|
+| Accuracy | 77.26% | 72.57% |
+| Churn Recall | 73% | 56% |
+| Speed | Moderate | Fast |
+| Recommendation | ✅ Primary | Secondary |
+
+### App Structure
+```
+apps/
+├── prediction.py          # Main Streamlit application
+├── utils.py              # Preprocessing & model utilities
+├── __init__.py           # Package initialization
+└── README.md             # Detailed app documentation
+```
+
+### Model Files Location
+```
+models/
+├── random_forest_model.pkl
+├── logistic_regression_model.pkl
+├── scaler.pkl
+└── feature_names.pkl
+```
+
+### Output
+The app automatically saves all predictions to:
+```
+data/predictions_log.csv
+```
+
+This file tracks:
+- Timestamp of prediction
+- Model used
+- All customer input features
+- Churn probability (%)
+- Retention probability (%)
+- Final prediction
+
+### Requirements
+All requirements are listed in `requirements.txt`:
+```
+pandas
+matplotlib
+seaborn
+numpy
+jupyter
+scikit-learn
+streamlit
+```
+
+Install with:
+```bash
+pip install -r requirements.txt
+```
+
+### Troubleshooting
+**Q: The app won't start**
+A: Make sure you're in the project root directory and all requirements are installed:
+```bash
+pip install -r requirements.txt
+streamlit run apps/prediction.py
+```
+
+**Q: Where do I find my prediction results?**
+A: Check `data/predictions_log.csv` for all saved predictions, or download individual predictions from the app.
+
+**Q: Which model should I use?**
+A: Random Forest is recommended for best accuracy (77.26%) and better churn detection (73% recall).
+
+---
 - Contract type vs Churn rate
 - Payment method vs Churn rate
 

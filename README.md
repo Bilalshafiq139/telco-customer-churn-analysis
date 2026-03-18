@@ -51,7 +51,7 @@ This project predicts customer churn for a telecom company using machine learnin
 
 ---
 
-## 🎯 Customer Churn Prediction App
+##  Customer Churn Prediction App
 
 We've built an interactive **Streamlit application** that allows anyone to predict customer churn probability using our trained machine learning models!
 
@@ -77,7 +77,7 @@ streamlit run apps/prediction.py
 The app will open at `http://localhost:8501`
 
 ### App Features
-✨ **Interactive Churn Prediction**
+ **Interactive Churn Prediction**
 - Enter customer data through an easy-to-use form
 - Choose between two models (Random Forest or Logistic Regression)
 - Get instant churn probability predictions
@@ -91,7 +91,7 @@ The app will open at `http://localhost:8501`
    - Demographics (gender, age, dependents, etc.)
    - Service details (tenure, charges, contract type)
    - Additional services (phone, internet, security, etc.)
-3. Click "🔮 Predict Churn"
+3. Click " Predict Churn"
 4. Review prediction results
 5. Download or save predictions
 
@@ -101,7 +101,7 @@ The app will open at `http://localhost:8501`
 | Accuracy | 77.26% | 72.57% |
 | Churn Recall | 73% | 56% |
 | Speed | Moderate | Fast |
-| Recommendation | ✅ Primary | Secondary |
+| Recommendation | Primary | Secondary |
 
 ### App Structure
 ```

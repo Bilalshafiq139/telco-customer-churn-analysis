@@ -4,8 +4,9 @@ Handles data formatting and model preparation
 """
 
 import pickle
+from pathlib import Path
+
 import pandas as pd
-import numpy as np
 
 
 class ChurnPredictor:
@@ -21,7 +22,12 @@ class ChurnPredictor:
     @staticmethod
     def _load_pickle(filepath):
         """Load pickle file"""
-        with open(filepath, 'rb') as f:
+        path = Path(filepath)
+        if not path.exists():
+            raise FileNotFoundError(
+                f"Missing model artifact: {path}. Run `python models/train_and_save_models.py` first."
+            )
+        with open(path, 'rb') as f:
             return pickle.load(f)
     
     def preprocess_input(self, input_data):
@@ -32,13 +38,14 @@ class ChurnPredictor:
         Returns:
             preprocessed DataFrame ready for prediction
         """
-        # Create DataFrame from input
         df = pd.DataFrame({feature: [input_data.get(feature, 0)] for feature in self.feature_names})
         
-        # Ensure correct data types
-        df = df.astype(int)
+        for column in df.columns:
+            if column in self.numeric_cols:
+                df[column] = pd.to_numeric(df[column], errors="coerce").fillna(0.0)
+            else:
+                df[column] = pd.to_numeric(df[column], errors="coerce").fillna(0).astype(int)
         
-        # Scale numeric columns
         df_scaled = df.copy()
         df_scaled[self.numeric_cols] = self.scaler.transform(df[self.numeric_cols])
         
@@ -54,14 +61,16 @@ class ChurnPredictor:
         """
         df_processed = self.preprocess_input(input_data)
         
-        # Get prediction and probability
-        prediction = self.model.predict(df_processed)[0]
-        probability = self.model.predict_proba(df_processed)[0]
+        prediction_label = self.model.predict(df_processed)[0]
+        probabilities = dict(zip(self.model.classes_, self.model.predict_proba(df_processed)[0]))
+        churn_probability = float(probabilities.get("Yes", probabilities.get(1, 0.0)))
+        no_churn_probability = float(probabilities.get("No", probabilities.get(0, 0.0)))
         
         return {
-            'prediction': prediction,
-            'probability_no_churn': probability[0],
-            'probability_churn': probability[1]
+            'prediction': 1 if prediction_label in ("Yes", 1) else 0,
+            'prediction_label': prediction_label,
+            'probability_no_churn': no_churn_probability,
+            'probability_churn': churn_probability,
         }
 
 

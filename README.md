@@ -1,178 +1,133 @@
 # Telco Customer Churn Analysis & Prediction
-![Python](https://img.shields.io/badge/python-3.10-blue.svg)
+
+Machine learning project for analyzing telecom customer churn and predicting which customers are likely to leave. The repository includes the original analysis notebooks, prepared datasets, a repeatable model-training script, and a Streamlit prediction app.
+
+![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat&logo=pandas&logoColor=white)
-![NumPy](https://img.shields.io/badge/numpy-%23013243.svg?style=flat&logo=numpy&logoColor=white)
 ![Scikit-Learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)
-![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=flat&logo=Matplotlib&logoColor=black)
-![Seaborn](https://img.shields.io/badge/Seaborn-%234479A1.svg?style=flat&logo=Seaborn&logoColor=white)
-![Status](https://img.shields.io/badge/Project-Completed-brightgreen)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-%23F7931E.svg?style=flat&logo=scikit-learn&logoColor=white)
-![Random Forest](https://img.shields.io/badge/Algorithm-Random%20Forest-green)
-![Logistic Regression](https://img.shields.io/badge/Algorithm-Logistic%20Regression-blue)
+![Streamlit](https://img.shields.io/badge/streamlit-FF4B4B.svg?style=flat&logo=streamlit&logoColor=white)
 
+## Project Overview
 
-### Project Overview
-This project predicts customer churn for a telecom company using machine learning. It combines exploratory data analysis (EDA), feature engineering, model building, and actionable business recommendations.
+The goal is to identify customers at risk of churn so retention teams can act earlier. The workflow covers:
 
-### Dataset
+1. Data understanding and cleaning
+2. Exploratory data analysis
+3. Feature engineering
+4. Logistic Regression and Random Forest modeling
+5. Model evaluation
+6. Business recommendations
+7. Interactive churn prediction with Streamlit
+
+## Dataset
+
 - Source: [Kaggle - Telco Customer Churn](https://www.kaggle.com/blastchar/telco-customer-churn)
-- Rows: 7,032
-- Columns: 21
-- Target Variable: `Churn` (0 = Stayed, 1 = Left)
+- Rows after cleaning: 7,032
+- Features: 24 model-ready features
+- Target: `Churn` (`No` or `Yes`)
 
-### Key Insights
-- 26.5% of customers churned, making the dataset imbalanced.
-- High-risk churners: Month-to-month contracts, Fiber optic users, low tenure, manual payments, lack of tech support.
-- Random Forest model achieved:
-  - Accuracy: 77%
-  - Churn recall: 73% (crucial for retention)
+## Key Findings
 
-### Modeling Approach
-1. Data Cleaning & Preprocessing
-2. Feature Engineering (Binary Mapping, One-Hot Encoding)
-3. Model Building:
-   - Logistic Regression
-   - Random Forest (best recall)
-4. Evaluation:
-   - Confusion Matrix
-   - Precision, Recall, F1-Score
-5. Business Recommendations
+- About 26.5% of customers churned, so churn recall matters more than accuracy alone.
+- Higher-risk segments include month-to-month contracts, low-tenure customers, electronic check users, and customers without support/security add-ons.
+- Random Forest is the recommended app model because it achieved the strongest test accuracy and churn detection balance in this project.
 
-### Actionable Recommendations
-- Focus retention campaigns on high-risk segments.
-- Upsell Tech Support & Online Security.
-- Encourage automated payment methods.
-- Improve Fiber optic customer satisfaction.
+## Model Performance
 
-### Visualizations
-- Churn distribution
-- Feature importance (Random Forest)
-- Tenure vs Churn boxplots
+| Metric | Logistic Regression | Random Forest |
+| --- | ---: | ---: |
+| Test accuracy | 72.57% | 77.26% |
+| Recommended use | Fast baseline | Primary app model |
 
----
+## Quick Start
 
-##  Customer Churn Prediction App
+```bash
+pip install -r requirements.txt
+python models/train_and_save_models.py
+streamlit run apps/prediction.py
+```
 
-We've built an interactive **Streamlit application** that allows anyone to predict customer churn probability using our trained machine learning models!
+The app opens at `http://localhost:8501`.
 
-### Quick Start
+Windows users can also run:
 
-#### Option 1: Windows Users
-Double-click `run_app.bat` or run:
 ```bash
 run_app.bat
 ```
 
-#### Option 2: Mac/Linux Users
-Run:
+Mac/Linux users can run:
+
 ```bash
 bash run_app.sh
 ```
 
-#### Option 3: Universal (Any OS)
+## Streamlit App Features
+
+- Choose between Random Forest and Logistic Regression
+- Enter customer demographics, billing, contract, and service details
+- View churn and retention probabilities
+- See clear low/medium/high risk styling
+- Download a prediction as CSV
+- Automatically log predictions to `data/predictions_log.csv`
+
+## Repository Structure
+
+```text
+.
+|-- apps/
+|   |-- __init__.py
+|   |-- prediction.py
+|   |-- utils.py
+|   `-- README.md
+|-- data/
+|   |-- churn_raw.csv
+|   |-- cleaned_dataset_for_EDA.csv
+|   |-- data_for_model_building.csv
+|   `-- train_test_splits.pkl
+|-- models/
+|   `-- train_and_save_models.py
+|-- notebooks/
+|   |-- 1_data_understanding.ipynb
+|   |-- 2_data_cleaning.ipynb
+|   |-- 3_EDA_analysis.ipynb
+|   |-- 4_feature_engineering.ipynb
+|   |-- 5_model_building.ipynb
+|   |-- 6_model_evaluation.ipynb
+|   `-- 7_business_recommendations.ipynb
+|-- requirements.txt
+|-- run_app.bat
+|-- run_app.sh
+|-- .gitignore
+`-- README.md
+```
+
+## Generated Files
+
+The training script creates these local model artifacts in `models/`:
+
+```text
+logistic_regression_model.pkl
+random_forest_model.pkl
+scaler.pkl
+feature_names.pkl
+```
+
+They are ignored by Git because they are generated binary files. Recreate them anytime with:
+
 ```bash
-streamlit run apps/prediction.py
+python models/train_and_save_models.py
 ```
 
-The app will open at `http://localhost:8501`
+## Troubleshooting
 
-### App Features
- **Interactive Churn Prediction**
-- Enter customer data through an easy-to-use form
-- Choose between two models (Random Forest or Logistic Regression)
-- Get instant churn probability predictions
-- Visual risk assessment (Low/Medium/High)
-- Save predictions to CSV files
-- Automatic prediction logging
+If the app says model artifacts are missing, run:
 
-### How to Use
-1. Select your preferred model (Random Forest recommended)
-2. Fill in customer information:
-   - Demographics (gender, age, dependents, etc.)
-   - Service details (tenure, charges, contract type)
-   - Additional services (phone, internet, security, etc.)
-3. Click " Predict Churn"
-4. Review prediction results
-5. Download or save predictions
-
-### Model Comparison
-| Metric | Random Forest | Logistic Regression |
-|--------|--------------|-------------------|
-| Accuracy | 77.26% | 72.57% |
-| Churn Recall | 73% | 56% |
-| Speed | Moderate | Fast |
-| Recommendation | Primary | Secondary |
-
-### App Structure
-```
-apps/
-├── prediction.py          # Main Streamlit application
-├── utils.py              # Preprocessing & model utilities
-├── __init__.py           # Package initialization
-└── README.md             # Detailed app documentation
+```bash
+python models/train_and_save_models.py
 ```
 
-### Model Files Location
-```
-models/
-├── random_forest_model.pkl
-├── logistic_regression_model.pkl
-├── scaler.pkl
-└── feature_names.pkl
-```
+If Streamlit is missing, run:
 
-### Output
-The app automatically saves all predictions to:
-```
-data/predictions_log.csv
-```
-
-This file tracks:
-- Timestamp of prediction
-- Model used
-- All customer input features
-- Churn probability (%)
-- Retention probability (%)
-- Final prediction
-
-### Requirements
-All requirements are listed in `requirements.txt`:
-```
-pandas
-matplotlib
-seaborn
-numpy
-jupyter
-scikit-learn
-streamlit
-```
-
-Install with:
 ```bash
 pip install -r requirements.txt
 ```
-
-### Troubleshooting
-**Q: The app won't start**
-A: Make sure you're in the project root directory and all requirements are installed:
-```bash
-pip install -r requirements.txt
-streamlit run apps/prediction.py
-```
-
-**Q: Where do I find my prediction results?**
-A: Check `data/predictions_log.csv` for all saved predictions, or download individual predictions from the app.
-
-**Q: Which model should I use?**
-A: Random Forest is recommended for best accuracy (77.26%) and better churn detection (73% recall).
-
----
-- Contract type vs Churn rate
-- Payment method vs Churn rate
-
-### Tech Stack
-- Python 3.12
-- Pandas, NumPy, Matplotlib, Seaborn
-- Scikit-learn
-
-

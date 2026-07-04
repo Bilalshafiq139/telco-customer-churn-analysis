@@ -5,19 +5,13 @@ Allows users to input customer data and predict churn probability
 
 import streamlit as st
 import pandas as pd
-import numpy as np
 from datetime import datetime
 import os
 import sys
 
 # Add paths for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from apps.utils import (
-    ChurnPredictor, 
-    get_feature_input_specs, 
-    get_categorical_options,
-    get_default_values
-)
+from apps.utils import ChurnPredictor
 
 
 # ====================[PAGE CONFIG]====================
@@ -70,6 +64,7 @@ try:
     predictor = rf_predictor if "Random Forest" in model_choice else lr_predictor
 except Exception as e:
     st.error(f"Error loading models: {e}")
+    st.info("From the project root, run `python models/train_and_save_models.py`, then restart the app.")
     st.stop()
 
 
@@ -208,19 +203,13 @@ with st.form("customer_form", clear_on_submit=False):
         )
     
     # ==================[SUBMIT BUTTON]====================
-    col_submit, col_reset = st.columns(2)
+    col_submit, _ = st.columns(2)
     
     with col_submit:
         submit_button = st.form_submit_button(
             "Predict Churn",
             use_container_width=True,
             type="primary"
-        )
-    
-    with col_reset:
-        reset_button = st.form_submit_button(
-            "Reset Form",
-            use_container_width=True
         )
 
 

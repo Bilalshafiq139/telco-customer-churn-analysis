@@ -48,6 +48,8 @@ The goal is to identify customers at risk of churn so retention teams can act ea
 | Churn recall | 80% | 73% |
 | Best use | Baseline/interpretable model | Primary retention model |
 
+Although Logistic Regression achieved higher churn recall, Random Forest was selected as the primary app model because it provided stronger overall accuracy and a better balance between churn detection and general prediction performance.
+
 ## Quick Start
 
 ```bash

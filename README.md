@@ -19,6 +19,14 @@ The goal is to identify customers at risk of churn so retention teams can act ea
 6. Business recommendations
 7. Interactive churn prediction with Streamlit
 
+## App Preview
+
+![Churn Prediction App](assets/screenshots/app_home.png)
+
+![Prediction Result](assets/screenshots/prediction_result.png)
+
+![Risk Output](assets/screenshots/risk_output.png)
+
 ## Dataset
 
 - Source: [Kaggle - Telco Customer Churn](https://www.kaggle.com/blastchar/telco-customer-churn)
@@ -36,8 +44,9 @@ The goal is to identify customers at risk of churn so retention teams can act ea
 
 | Metric | Logistic Regression | Random Forest |
 | --- | ---: | ---: |
-| Test accuracy | 72.57% | 77.26% |
-| Recommended use | Fast baseline | Primary app model |
+| Accuracy | 72.57% | 77.26% |
+| Churn recall | 80% | 73% |
+| Best use | Baseline/interpretable model | Primary retention model |
 
 ## Quick Start
 
@@ -65,8 +74,8 @@ bash run_app.sh
 
 - Choose between Random Forest and Logistic Regression
 - Enter customer demographics, billing, contract, and service details
-- View churn and retention probabilities
-- See clear low/medium/high risk styling
+- View churn probability, retention probability, and explicit risk level
+- See clear Low Risk, Medium Risk, and High Risk styling
 - Download a prediction as CSV
 - Automatically log predictions to `data/predictions_log.csv`
 
@@ -79,12 +88,19 @@ bash run_app.sh
 |   |-- prediction.py
 |   |-- utils.py
 |   `-- README.md
+|-- assets/
+|   `-- screenshots/
 |-- data/
 |   |-- churn_raw.csv
 |   |-- cleaned_dataset_for_EDA.csv
 |   |-- data_for_model_building.csv
+|   |-- predictions_log.csv
 |   `-- train_test_splits.pkl
 |-- models/
+|   |-- feature_names.pkl
+|   |-- logistic_regression_model.pkl
+|   |-- random_forest_model.pkl
+|   |-- scaler.pkl
 |   `-- train_and_save_models.py
 |-- notebooks/
 |   |-- 1_data_understanding.ipynb
@@ -101,9 +117,9 @@ bash run_app.sh
 `-- README.md
 ```
 
-## Generated Files
+## Model Artifacts
 
-The training script creates these local model artifacts in `models/`:
+The repository includes trained model artifacts in `models/` so the Streamlit app can run immediately after installation:
 
 ```text
 logistic_regression_model.pkl
@@ -112,7 +128,7 @@ scaler.pkl
 feature_names.pkl
 ```
 
-They are ignored by Git because they are generated binary files. Recreate them anytime with:
+Recreate them anytime with:
 
 ```bash
 python models/train_and_save_models.py

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.preprocessing import StandardScaler
 
 
@@ -14,6 +15,18 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
 MODELS_DIR = PROJECT_ROOT / "models"
 NUMERIC_COLUMNS = ["tenure", "MonthlyCharges", "TotalCharges"]
+
+
+def print_model_report(model_name, model, X_test, y_test):
+    """Print accuracy, classification report, and confusion matrix for a model."""
+    y_pred = model.predict(X_test)
+    accuracy = model.score(X_test, y_test)
+
+    print(f"\n{model_name} test accuracy: {accuracy:.4f}")
+    print(f"\n{model_name} classification report:")
+    print(classification_report(y_test, y_pred))
+    print(f"{model_name} confusion matrix:")
+    print(confusion_matrix(y_test, y_pred))
 
 
 def train_and_save_models():
@@ -35,8 +48,7 @@ def train_and_save_models():
     print("Training Logistic Regression model...")
     lr_model = LogisticRegression(max_iter=1000, class_weight="balanced", random_state=42)
     lr_model.fit(X_train_scaled, y_train)
-    lr_accuracy = lr_model.score(X_test_scaled, y_test)
-    print(f"Logistic Regression test accuracy: {lr_accuracy:.4f}")
+    print_model_report("Logistic Regression", lr_model, X_test_scaled, y_test)
 
     print("Training Random Forest model...")
     rf_model = RandomForestClassifier(
@@ -46,8 +58,7 @@ def train_and_save_models():
         class_weight="balanced",
     )
     rf_model.fit(X_train_scaled, y_train)
-    rf_accuracy = rf_model.score(X_test_scaled, y_test)
-    print(f"Random Forest test accuracy: {rf_accuracy:.4f}")
+    print_model_report("Random Forest", rf_model, X_test_scaled, y_test)
 
     artifacts = {
         "logistic_regression_model.pkl": lr_model,

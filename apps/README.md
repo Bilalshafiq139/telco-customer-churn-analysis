@@ -33,7 +33,7 @@ python models/train_and_save_models.py
 
 - Random Forest and Logistic Regression model selection
 - Customer profile form with demographics, billing, contract, and services
-- Churn probability and retention probability output
+- Churn probability, retention probability, explicit risk level, and prediction output
 - CSV download for individual predictions
 - Automatic prediction logging to `data/predictions_log.csv`
 

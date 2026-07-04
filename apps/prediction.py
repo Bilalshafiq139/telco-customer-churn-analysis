@@ -14,6 +14,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from apps.utils import ChurnPredictor
 
 
+def get_risk_level(churn_probability):
+    """Return a business-friendly risk label from a churn probability percentage."""
+    if churn_probability > 60:
+        return "High Risk"
+    if churn_probability > 40:
+        return "Medium Risk"
+    return "Low Risk"
+
+
 # ====================[PAGE CONFIG]====================
 st.set_page_config(
     page_title="Churn Prediction App",
@@ -256,9 +265,10 @@ if submit_button:
         
         with pred_col1:
             churn_probability = result['probability_churn'] * 100
-            if churn_probability > 60:
+            risk_level = get_risk_level(churn_probability)
+            if risk_level == "High Risk":
                 st.error(f"Churn Probability: {churn_probability:.1f}%")
-            elif churn_probability > 40:
+            elif risk_level == "Medium Risk":
                 st.warning(f"Churn Probability: {churn_probability:.1f}%")
             else:
                 st.success(f"Churn Probability: {churn_probability:.1f}%")
@@ -272,16 +282,24 @@ if submit_button:
                 st.error(f"Prediction: Likely to Churn")
             else:
                 st.success(f"Prediction: Likely to Stay")
+
+        if risk_level == "High Risk":
+            st.error(f"Risk Level: {risk_level}")
+        elif risk_level == "Medium Risk":
+            st.warning(f"Risk Level: {risk_level}")
+        else:
+            st.success(f"Risk Level: {risk_level}")
         
         # Additional insights
         st.subheader("Detailed Analysis")
         
         # Create a summary table
         summary_data = {
-            'Metric': ['Churn Probability', 'Retention Probability', 'Prediction'],
+            'Metric': ['Churn Probability', 'Retention Probability', 'Risk Level', 'Prediction'],
             'Value': [
                 f"{churn_probability:.2f}%",
                 f"{no_churn_probability:.2f}%",
+                risk_level,
                 "Churn" if result['prediction'] == 1 else "No Churn"
             ]
         }
@@ -320,6 +338,7 @@ if submit_button:
             'Multiple_Lines': multiple_lines,
             'Churn_Probability': round(churn_probability, 2),
             'Retention_Probability': round(no_churn_probability, 2),
+            'Risk_Level': risk_level,
             'Prediction': 'Churn' if result['prediction'] == 1 else 'No Churn'
         }
         
@@ -341,6 +360,7 @@ if submit_button:
         
         if os.path.exists(log_path):
             existing_df = pd.read_csv(log_path)
+            existing_df = existing_df.reindex(columns=pred_df.columns)
             updated_df = pd.concat([existing_df, pred_df], ignore_index=True)
         else:
             updated_df = pred_df
@@ -364,5 +384,6 @@ Model Performance:
 - Random Forest Accuracy: 77.26%
 - Logistic Regression Accuracy: 72.57%
 
-For questions or feedback, please contact the analytics team.
+Developed by Bilal Shafique
+Data Analyst | Python | Machine Learning | Streamlit
 """)
